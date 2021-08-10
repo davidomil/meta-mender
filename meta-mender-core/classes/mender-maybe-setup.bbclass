@@ -22,13 +22,13 @@ def mender_features(d, separator=" "):
 
     return separator.join([feature for feature in enabled if feature not in disabled])
 
-OVERRIDES_append = ":${@mender_features(d, separator=':')}"
+OVERRIDES:append = ":${@mender_features(d, separator=':')}"
 
 # MENDER_FEATURES_ENABLE and MENDER_FEATURES_DISABLE map to
 # DISTRO_FEATURES_BACKFILL and DISTRO_FEATURES_BACKFILL_CONSIDERED,
 # respectively.
-DISTRO_FEATURES_BACKFILL_append = " ${MENDER_FEATURES_ENABLE}"
-DISTRO_FEATURES_BACKFILL_CONSIDERED_append = " ${MENDER_FEATURES_DISABLE}"
+DISTRO_FEATURES_BACKFILL:append = " ${MENDER_FEATURES_ENABLE}"
+DISTRO_FEATURES_BACKFILL_CONSIDERED:append = " ${MENDER_FEATURES_DISABLE}"
 
 python() {
     # Add all possible Mender features here. This list is here to have an
