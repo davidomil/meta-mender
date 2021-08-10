@@ -28,7 +28,7 @@ SRC_URI:append:mender-uboot = "${@bb.utils.contains('MENDER_UBOOT_AUTO_CONFIGURE
 ################################################################################
 # Generic tasks.
 ################################################################################
-do_provide:mender_defines() {
+do_provide_mender_defines() {
     set -x
 
     if ! ${@bb.utils.contains('DISTRO_FEATURES', 'mender-uboot', 'true', 'false', d)}; then
@@ -348,7 +348,7 @@ do_mender_uboot_auto_configure[depends] = "${PN}:do_prepare_recipe_sysroot"
 # edited.
 SRCTREECOVEREDTASKS:append = " do_mender_uboot_auto_configure"
 
-do_save:mender_auto_configured_patch() {
+do_save_mender_auto_configured_patch() {
     diff -r -u ${MENDER_UBOOT_OLD_SRC} ${S} > ${WORKDIR}/mender_auto_configured.patch || true
 
     # Get rid of absolute paths in the patch.

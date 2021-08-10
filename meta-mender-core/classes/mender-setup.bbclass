@@ -278,15 +278,14 @@ python mender_vars_handler() {
 
         for k in d.keys():
             if k.startswith("MENDER_"):
-                if re.search("_[-a-z0-9][-\w]*$", k) != None:
-                    # skip variable overrides
-                    continue;
+                # strip off any overrides
+                kbase = k.split(':')[0]
 
-                if k not in mender_vars.keys():
+                if kbase not in mender_vars.keys():
                     # Warn if user has defined some new (unused) MENDER_.* variables
                     bb.warn("\"%s\" is not a recognized MENDER_ variable. Typo?" % k)
 
-                elif mender_vars[k] != "":
+                elif mender_vars[kbase] != "":
                     # If certain keys should have associated some restricted value
                     # (expressed in regular expression in the .json-file)
                     # NOTE: empty strings (json-values) are only compared by key, 
@@ -294,9 +293,9 @@ python mender_vars_handler() {
                     expected_expressions = []
                     val = d.getVar(k)
 
-                    if isinstance (mender_vars[k], list):
+                    if isinstance (mender_vars[kbase], list):
                         # item is a list of strings
-                        for regex in mender_vars[k]: # (can be a list of items)
+                        for regex in mender_vars[kbase]: # (can be a list of items)
                             if re.search(regex, val) == None:
                                 expected_expressions += [regex]
                         if len(expected_expressions) > 0: 
@@ -305,7 +304,7 @@ python mender_vars_handler() {
 
                     else: 
                         # item is a single string
-                        regex = mender_vars[k]
+                        regex = mender_vars[kbase]
                         if re.search(regex, val) == None: 
                             bb.note("%s initialized with value \"%s\"" % (k, val),\
                                     " | Expected[regex]: \"%s\"" % regex)
@@ -316,9 +315,9 @@ python mender_vars_handler() {
         mender_vars = {}
         for k in d.keys():
             if k.startswith("MENDER_"):
-                if re.search("_[-a-z0-9][-\w]*$", k) == None:
-                    mender_vars[k] = ""
-                    #mender_vars[k] = d.getVar(k) might be useful for inspection
+                kbase = k.split(':')[0]
+                mender_vars[kbase] = ""
+                #mender_vars[k] = d.getVar(k) might be useful for inspection
         with open (path, 'w') as f:
             json.dump(mender_vars, f, sort_keys=True, indent=4)
 }
