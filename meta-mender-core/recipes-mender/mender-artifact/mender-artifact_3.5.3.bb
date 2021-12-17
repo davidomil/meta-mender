@@ -1,6 +1,4 @@
-require mender-connect.inc
-
-RDEPENDS_${PN} = "glib-2.0 mender-client (>= 2.5)"
+require mender-artifact.inc
 
 ################################################################################
 #-------------------------------------------------------------------------------
@@ -10,10 +8,10 @@ RDEPENDS_${PN} = "glib-2.0 mender-client (>= 2.5)"
 # - DEFAULT_PREFERENCE
 #-------------------------------------------------------------------------------
 
-SRC_URI = "git://github.com/mendersoftware/mender-connect.git;protocol=https;branch=1.1.x"
+SRC_URI = "git://github.com/mendersoftware/mender-artifact.git;protocol=https;branch=3.5.x"
 
-# Tag: 1.1.1
-SRCREV = "a65c431f19b8dd03b207441e78bc2b6f35a91b85"
+# Tag: 3.5.3
+SRCREV = "bd9e03bc89ec54682b4fe18d74414bb74a2cf602"
 
 # Enable this in Betas, and in branches that cannot carry this major version as
 # default.
@@ -27,4 +25,6 @@ SRCREV = "a65c431f19b8dd03b207441e78bc2b6f35a91b85"
 # releases, we must check the LIC_FILES_CHKSUM.sha256 file, not the LICENSE
 # file.
 LICENSE = "Apache-2.0 & BSD-2-Clause & BSD-3-Clause & ISC & MIT"
-LIC_FILES_CHKSUM = "file://src/github.com/mendersoftware/mender-connect/LIC_FILES_CHKSUM.sha256;md5=fa1436147d867cccbbc08ed73f77f9b6"
+LIC_FILES_CHKSUM = "file://src/github.com/mendersoftware/mender-artifact/LIC_FILES_CHKSUM.sha256;md5=323a5656903d7707e13bbf9306a1e491"
+
+DEPENDS += "xz"
